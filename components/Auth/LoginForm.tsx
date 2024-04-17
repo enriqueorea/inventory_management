@@ -4,10 +4,10 @@ import { useForm } from "react-hook-form";
 import { Form, FormField } from "../ui/form";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FaGoogle } from "react-icons/fa6";
-import { useState } from "react";
+import { FC, useState } from "react";
 import { signIn } from "next-auth/react";
 
-export const LoginForm = () => {
+export const LoginForm: FC = () => {
   const form = useForm();
   const [isVisible, setIsVisible] = useState(false);
 
