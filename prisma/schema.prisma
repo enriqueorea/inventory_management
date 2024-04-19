@@ -59,17 +59,29 @@ model Stock {
 }
 
 model Item {
-  id            String @id @default(cuid())
-  stockId       String @unique
+  id            String     @id @default(cuid())
+  stockId       String     @unique
   stock_number  String
   model         String
   serial        String
   description   String
   brand         String
   budget_number String
+  image         ItemImage?
   price         Float
+  remarks       String     @db.Text
 
   stock Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
+}
+
+model ItemImage {
+  id        String   @id @default(cuid())
+  itemId    String   @unique
+  url       String   @unique @db.Text
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  item Item @relation(fields: [itemId], references: [id])
 }
 
 //auth
