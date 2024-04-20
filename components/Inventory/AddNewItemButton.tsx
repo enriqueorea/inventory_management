@@ -40,14 +40,6 @@ export const AddNewItemButton = () => {
               <ModalBody>
                 <NewItemForm />
               </ModalBody>
-              <ModalFooter>
-                <Button color="danger" variant="light" onPress={onClose}>
-                  Close
-                </Button>
-                <Button color="primary" onPress={onClose}>
-                  Action
-                </Button>
-              </ModalFooter>
             </>
           )}
         </ModalContent>
@@ -65,10 +57,18 @@ const NewItemForm = () => {
   const handleImageChange = (file: any) => {
     form.setValue("image", file);
   };
+
+  const onSubmit = async (data: ItemForm) => {
+    console.log(data);
+  };
+
   console.log(form.watch("image"));
   return (
     <Form {...form}>
-      <form className="flex flex-col gap-4">
+      <form
+        onSubmit={form.handleSubmit(onSubmit)}
+        className="flex flex-col gap-4"
+      >
         <FormField
           control={form.control}
           name="stock_number"
@@ -213,6 +213,10 @@ const NewItemForm = () => {
             />
           )}
         />
+
+        <Button type="submit" color="primary">
+          Guardar nuevo bien
+        </Button>
       </form>
     </Form>
   );
