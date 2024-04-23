@@ -15,6 +15,7 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
   Spinner,
+  Button,
 } from "@nextui-org/react";
 import { useNavbar } from "@/store/ui";
 import { signOut, useSession } from "next-auth/react";
@@ -38,8 +39,6 @@ const ManagerLayout = ({
       setIsMenuOpen(true);
     }
   }, [setIsMenuOpen]);
-
-  console.log(session);
 
   const handleSignOut = () => {
     signOut();
@@ -77,7 +76,7 @@ const ManagerLayout = ({
         classNames={{
           base: "mb-[40px] shadow-md",
           wrapper: "max-w-[100%]",
-          menu: "bg-[#f9f9f9] border-b-[1px] border-[#e1e1e1] w-fit shadow-md px-0 gap-0",
+          menu: "bg-[#f9f9f9] border-b-[1px] border-[#e1e1e1] w-fit shadow-md px-0 pl-1 gap-0",
           menuItem: `bg-[#f9f9f9] px-4 py-2`,
         }}
         isMenuOpen={isMenuOpen}
@@ -124,7 +123,7 @@ const ManagerLayout = ({
             <NavbarMenuItem
               className={`${
                 pathname === item.href
-                  ? "bg-white shadow-lg scale-110"
+                  ? "bg-white shadow-lg border-l-[4px] border-primary-500"
                   : "bg-[#f9f9f9]"
               }`}
               key={`${item.label}-${index}`}

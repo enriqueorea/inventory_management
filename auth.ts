@@ -6,6 +6,8 @@ import { PrismaAdapter } from "@auth/prisma-adapter";
 import { db } from "./lib/prisma";
 import { getUserById } from "./data/user";
 import { UserRole } from "@prisma/client";
+import { getProfileByUserID } from "./data/profile";
+import { getInventoryByUserId } from "./data/inventory";
 
 declare module "next-auth" {
   /**
@@ -14,6 +16,8 @@ declare module "next-auth" {
   interface Session {
     user: {
       role: UserRole;
+      stock_id: string | null;
+      profile_id: string | null;
       /**
        * By default, TypeScript merges new interface properties and overwrites existing ones.
        * In this case, the default session user properties will be overwritten,
@@ -41,16 +45,29 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         session.user.role = token.role as UserRole;
       }
 
+      if (token.stock_id && session.user) {
+        session.user.stock_id = token.stock_id as string;
+      }
+
+      if (token.profile_id && session.user) {
+        session.user.profile_id = token.profile_id as string;
+      }
+
       return session;
     },
 
     async jwt({ token }) {
-      console.log(token);
       if (!token.sub) return token;
       const existingUser = await getUserById(token.sub);
+      const userProfile = await getProfileByUserID(token.sub);
+      const userStock = await getInventoryByUserId(token.sub);
       if (!existingUser) return token;
 
+      token.stock_id = userStock?.id || null;
+      token.profile_id = userProfile?.id || null;
+
       token.role = existingUser.role;
+
       return token;
     },
   },
