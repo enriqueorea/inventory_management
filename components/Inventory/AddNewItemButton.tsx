@@ -16,6 +16,9 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { FiPlusCircle } from "react-icons/fi";
 import { Form, FormField } from "../ui/form";
+import { useMutation } from "@tanstack/react-query";
+import { NewItem, type NewItemForm } from "@/models/items/new-item";
+import axios from "axios";
 
 export const AddNewItemButton = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -48,18 +51,38 @@ export const AddNewItemButton = () => {
   );
 };
 
-interface ItemForm extends Item {
-  image: File;
-}
-
 const NewItemForm = () => {
-  const form = useForm<ItemForm>();
+  const { data: session } = useSession();
+  const form = useForm<NewItemForm>({
+    defaultValues: {
+      stockId: session?.user.stock_id || "",
+    },
+  });
   const handleImageChange = (file: any) => {
     form.setValue("image", file);
   };
 
-  const onSubmit = async (data: ItemForm) => {
+  const mutation = useMutation({
+    mutationKey: ["new_item"],
+    mutationFn: async (data: any) => {
+      return axios.post("/api/v1/items/new-item", data);
+    },
+    onError: (error) => {
+      console.error(error);
+    },
+    onSuccess: (data) => {
+      console.log(data);
+    },
+  });
+
+  const onSubmit = async (data: NewItemForm) => {
     console.log(data);
+    const itemWithFloatPrice = {
+      ...data,
+      price: data.price.toFixed(2) as number,
+    };
+    console.log(itemWithFloatPrice);
+    mutation.mutate(itemWithFloatPrice);
   };
 
   console.log(form.watch("image"));

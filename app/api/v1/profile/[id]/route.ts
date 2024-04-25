@@ -1,7 +1,6 @@
 import { auth } from "@/auth";
 import { NewProfileForm } from "@/components/Profile/NewProfile";
 import { db } from "@/lib/prisma";
-import { Profile } from "@prisma/client";
 import { User } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 

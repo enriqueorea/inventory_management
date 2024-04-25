@@ -59,8 +59,8 @@ model Stock {
 }
 
 model Item {
-  id            String     @id @default(cuid())
-  stockId       String     @unique
+  id            String     @id @unique @default(cuid())
+  stockId       String
   stock_number  String
   model         String
   serial        String
