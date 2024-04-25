@@ -53,6 +53,7 @@ export const AddNewItemButton = () => {
 
 const NewItemForm = () => {
   const { data: session } = useSession();
+  console.log("stockId", session?.user.stock_id);
   const form = useForm<NewItemForm>({
     defaultValues: {
       stockId: session?.user.stock_id || "",
@@ -65,7 +66,22 @@ const NewItemForm = () => {
   const mutation = useMutation({
     mutationKey: ["new_item"],
     mutationFn: async (data: any) => {
-      return axios.post("/api/v1/items/new-item", data);
+      const formData = new FormData();
+      formData.append("stock_number", data.stock_number);
+      formData.append("description", data.description);
+      formData.append("brand", data.brand);
+      formData.append("model", data.model);
+      formData.append("serial", data.serial);
+      formData.append("budget_number", data.budget_number);
+      formData.append("price", data.price);
+      formData.append("image", data.image);
+      formData.append("remarks", data.remarks);
+
+      return axios.post("/api/v1/items/new-item", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
     },
     onError: (error) => {
       console.error(error);
@@ -79,7 +95,6 @@ const NewItemForm = () => {
     console.log(data);
     const itemWithFloatPrice = {
       ...data,
-      price: data.price.toFixed(2) as number,
     };
     console.log(itemWithFloatPrice);
     mutation.mutate(itemWithFloatPrice);
@@ -193,8 +208,18 @@ const NewItemForm = () => {
           defaultValue={0}
           render={({ field }) => (
             <Input
-              {...field}
-              value={field.value.toString()}
+              step={0.01}
+              value={
+                isNaN(field.value) || field.value === 0
+                  ? ""
+                  : field.value.toString()
+              }
+              onChange={(e) => {
+                console.log(e.target.value);
+                const output = Number(e.target.value);
+                console.log(output);
+                field.onChange(isNaN(output) ? 0 : output);
+              }}
               label="Precio:"
               labelPlacement="outside"
               variant="bordered"

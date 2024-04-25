@@ -7,18 +7,37 @@ import mime from "mime";
 import { join } from "path";
 import { stat, writeFile, mkdir } from "fs/promises";
 
+export const config = {
+  api: {
+    bodyParser: false,
+  },
+};
+
 export const POST = auth(async function POST(req) {
   if (req.auth) {
-    const data: NewItemForm = await req.json();
+    const formData = await req.formData();
 
-    const item = await createItem(data);
+    const newItem = {
+      stockId: req.auth.user.stock_id as string,
+      stock_number: formData.get("stock_number") as string,
+      model: formData.get("model") as string,
+      serial: formData.get("serial") as string,
+      description: formData.get("description") as string,
+      brand: formData.get("brand") as string,
+      budget_number: formData.get("budget_number") as string,
+      price: Number(formData.get("price")),
+      remarks: formData.get("remarks") as string,
+    };
+    console.log(newItem);
+    const image = formData.get("image") as File;
+    const item = await createItem(newItem);
 
-    if (data.image && item) {
-      console.log(data.image);
-      const buffer = Buffer.from(await data.image.arrayBuffer());
+    if (image && item) {
+      console.log(image);
+      const buffer = Buffer.from(await image.arrayBuffer());
       const relativeUploadDir = `/images`;
       const uploadDir = join(process.cwd(), "public", relativeUploadDir);
-      const filename = `${item.id}.${mime.getExtension(data.image.type)}`;
+      const filename = `${item.id}.${mime.getExtension(image.type)}`;
 
       try {
         await stat(uploadDir);
@@ -34,7 +53,7 @@ export const POST = auth(async function POST(req) {
     }
 
     return NextResponse.json(
-      { succes: true, message: "Item created successfully", data: item },
+      { succes: true, message: "Item created successfully", data: null },
       { status: 201 }
     );
   }
