@@ -21,18 +21,18 @@ enum UserRole {
 }
 
 model User {
-  id            String    @id @default(cuid())
+  id            String     @id @default(cuid())
   name          String?
-  email         String    @unique
+  email         String     @unique
   emailVerified DateTime?
   image         String?
   accounts      Account[]
   sessions      Session[]
   profile       Profile?
-  stocks        Stock?
-  role          UserRole  @default(USER)
-  createdAt     DateTime  @default(now())
-  updatedAt     DateTime  @updatedAt
+  iventory      Inventory?
+  role          UserRole   @default(USER)
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
 }
 
 model Profile {
@@ -48,7 +48,7 @@ model Profile {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model Stock {
+model Inventory {
   id        String   @id @default(cuid())
   userId    String   @unique
   items     Item[]
@@ -60,7 +60,7 @@ model Stock {
 
 model Item {
   id            String     @id @unique @default(cuid())
-  stockId       String
+  inventoryId   String
   stock_number  String
   model         String
   serial        String
@@ -71,7 +71,7 @@ model Item {
   price         Float
   remarks       String     @db.Text
 
-  stock Stock @relation(fields: [stockId], references: [id], onDelete: Cascade)
+  stock Inventory @relation(fields: [inventoryId], references: [id], onDelete: Cascade)
 }
 
 model ItemImage {

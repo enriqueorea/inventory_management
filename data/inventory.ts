@@ -1,19 +1,19 @@
 import { db } from "@/lib/prisma";
-import { Stock } from "@prisma/client";
+import { Inventory } from "@prisma/client";
 
 export const getInventoryById = async (id: string) => {
-  const inventory = await db.stock.findUnique({ where: { id } });
+  const inventory = await db.inventory.findUnique({ where: { id } });
 
   return inventory;
 };
 
 export const getInventoryByUserId = async (userId: string) => {
-  const inventory = await db.stock.findUnique({ where: { userId } });
+  const inventory = await db.inventory.findUnique({ where: { userId } });
   return inventory;
 };
 
 export const createInventory = async (userId: string) => {
-  const inventory = db.stock.create({
+  const inventory = db.inventory.create({
     data: {
       userId,
     },
@@ -22,8 +22,8 @@ export const createInventory = async (userId: string) => {
   return inventory;
 };
 
-export const updateInventory = async (id: string, data: Stock) => {
-  const inventory = db.stock.update({
+export const updateInventory = async (id: string, data: Inventory) => {
+  const inventory = db.inventory.update({
     where: { id },
     data,
   });

@@ -1,5 +1,5 @@
 export interface NewItem {
-  stockId: string;
+  inventoryId: string;
   stock_number: string;
   model: string;
   serial: string;

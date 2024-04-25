@@ -4,6 +4,7 @@ import "./globals.css";
 import { Providers } from "./providers";
 import { auth } from "@/auth";
 import { SessionProvider } from "next-auth/react";
+import { Toaster } from "@/components/ui/toaster";
 
 const poppins = Poppins({
   weight: ["400", "500", "600", "700"],
@@ -28,6 +29,7 @@ export default async function RootLayout({
       <html lang="en" className="light">
         <body className={poppins.className}>
           <Providers>{children}</Providers>
+          <Toaster />
         </body>
       </html>
     </SessionProvider>

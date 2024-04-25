@@ -19,6 +19,7 @@ import { Form, FormField } from "../ui/form";
 import { useMutation } from "@tanstack/react-query";
 import { NewItem, type NewItemForm } from "@/models/items/new-item";
 import axios from "axios";
+import { toast } from "../ui/use-toast";
 
 export const AddNewItemButton = () => {
   const { isOpen, onOpen, onOpenChange } = useDisclosure();
@@ -53,10 +54,9 @@ export const AddNewItemButton = () => {
 
 const NewItemForm = () => {
   const { data: session } = useSession();
-  console.log("stockId", session?.user.stock_id);
   const form = useForm<NewItemForm>({
     defaultValues: {
-      stockId: session?.user.stock_id || "",
+      inventoryId: session?.user.inventory_id || "",
     },
   });
   const handleImageChange = (file: any) => {
@@ -85,9 +85,18 @@ const NewItemForm = () => {
     },
     onError: (error) => {
       console.error(error);
+      toast({
+        title: "Error al guardar nuevo bien",
+        description: error.message,
+        variant: "destructive",
+      });
     },
     onSuccess: (data) => {
       console.log(data);
+      toast({
+        title: "Nuevo bien guardado",
+        description: "El nuevo bien ha sido guardado exitosamente",
+      });
     },
   });
 
@@ -100,7 +109,6 @@ const NewItemForm = () => {
     mutation.mutate(itemWithFloatPrice);
   };
 
-  console.log(form.watch("image"));
   return (
     <Form {...form}>
       <form
@@ -118,7 +126,10 @@ const NewItemForm = () => {
               labelPlacement="outside"
               variant="bordered"
               type="text"
-              placeholder="Número de inventario del bien"
+              placeholder="DPD50-00662"
+              isRequired
+              isInvalid={!!form.formState.errors.stock_number}
+              errorMessage={form.formState.errors.stock_number?.message}
             />
           )}
         />
@@ -133,7 +144,10 @@ const NewItemForm = () => {
               labelPlacement="outside"
               variant="bordered"
               type="text"
-              placeholder="Descripción del bien"
+              placeholder="IMPRESORA LASER MONOCROMÁTICA"
+              isRequired
+              isInvalid={!!form.formState.errors.description}
+              errorMessage={form.formState.errors.description?.message}
             />
           )}
         />
@@ -149,7 +163,10 @@ const NewItemForm = () => {
               labelPlacement="outside"
               variant="bordered"
               type="text"
-              placeholder="Marca del bien"
+              isRequired
+              placeholder="HP"
+              isInvalid={!!form.formState.errors.brand}
+              errorMessage={form.formState.errors.brand?.message}
             />
           )}
         />
@@ -165,7 +182,10 @@ const NewItemForm = () => {
               labelPlacement="outside"
               variant="bordered"
               type="text"
-              placeholder="Modelo del bien"
+              isRequired
+              placeholder="MX404N"
+              isInvalid={!!form.formState.errors.model}
+              errorMessage={form.formState.errors.model?.message}
             />
           )}
         />
@@ -181,7 +201,10 @@ const NewItemForm = () => {
               labelPlacement="outside"
               variant="bordered"
               type="text"
-              placeholder="Número de serie del bien"
+              isRequired
+              placeholder="1234567890"
+              isInvalid={!!form.formState.errors.serial}
+              errorMessage={form.formState.errors.serial?.message}
             />
           )}
         />
@@ -197,7 +220,10 @@ const NewItemForm = () => {
               labelPlacement="outside"
               variant="bordered"
               type="text"
-              placeholder="Número de presupuesto del bien"
+              isRequired
+              placeholder="1234567890"
+              isInvalid={!!form.formState.errors.budget_number}
+              errorMessage={form.formState.errors.budget_number?.message}
             />
           )}
         />
@@ -224,7 +250,10 @@ const NewItemForm = () => {
               labelPlacement="outside"
               variant="bordered"
               type="number"
-              placeholder="Precio del bien"
+              placeholder="1500.00"
+              isRequired
+              isInvalid={!!form.formState.errors.price}
+              errorMessage={form.formState.errors.price?.message}
             />
           )}
         />
@@ -238,11 +267,12 @@ const NewItemForm = () => {
                 e.preventDefault();
                 handleImageChange(e.target.files?.[0]);
               }}
-              label="Imágenes:"
+              label="Imágen:"
               labelPlacement="outside"
               placeholder="Selecciona una imagen del bien"
               variant="bordered"
               type="file"
+              accept="image/*"
             />
           )}
         />

@@ -1,5 +1,5 @@
 import { auth } from "@/auth";
-import { createItem, createItemImage } from "@/data/items";
+import { createItem, createItemImage, updateItemImage } from "@/data/items";
 import { db } from "@/lib/prisma";
 import { NewItemForm } from "@/models/items/new-item";
 import { NextResponse } from "next/server";
@@ -18,7 +18,7 @@ export const POST = auth(async function POST(req) {
     const formData = await req.formData();
 
     const newItem = {
-      stockId: req.auth.user.stock_id as string,
+      inventoryId: req.auth.user.inventory_id as string,
       stock_number: formData.get("stock_number") as string,
       model: formData.get("model") as string,
       serial: formData.get("serial") as string,
@@ -33,7 +33,6 @@ export const POST = auth(async function POST(req) {
     const item = await createItem(newItem);
 
     if (image && item) {
-      console.log(image);
       const buffer = Buffer.from(await image.arrayBuffer());
       const relativeUploadDir = `/images`;
       const uploadDir = join(process.cwd(), "public", relativeUploadDir);
@@ -53,7 +52,7 @@ export const POST = auth(async function POST(req) {
     }
 
     return NextResponse.json(
-      { succes: true, message: "Item created successfully", data: null },
+      { succes: true, message: "Item created successfully", data: item },
       { status: 201 }
     );
   }

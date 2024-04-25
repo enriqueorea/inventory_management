@@ -13,7 +13,7 @@ import { Session } from "next-auth";
 const fakeData: Item[] = [
   {
     id: "234234-234",
-    stockId: "4534532",
+    inventoryId: "4534532",
     stock_number: "DPD50-00670",
     model: "VICA",
     serial: "322104502225",
@@ -25,7 +25,7 @@ const fakeData: Item[] = [
   },
   {
     id: "534523-879",
-    stockId: "7832456",
+    inventoryId: "7832456",
     stock_number: "DPD50-00567",
     model: "XLTZ",
     serial: "456789012345",
@@ -38,7 +38,7 @@ const fakeData: Item[] = [
 
   {
     id: "123456-789",
-    stockId: "9876543",
+    inventoryId: "9876543",
     stock_number: "DPD50-00321",
     model: "GAMMA",
     serial: "987654321098",

@@ -12,9 +12,9 @@ export const getItemById = async (id: string) => {
   return item;
 };
 
-export const getItemsByStockId = async (stockId: string) => {
+export const getItemsByStockId = async (inventoryId: string) => {
   const items = await db.item.findMany({
-    where: { stockId },
+    where: { inventoryId },
   });
   return items;
 };
@@ -47,6 +47,14 @@ export const createItemImage = async (itemId: string, image_url: string) => {
       url: image_url,
       itemId,
     },
+  });
+  return image;
+};
+
+export const updateItemImage = async (itemId: string, image_url: string) => {
+  const image = await db.itemImage.update({
+    where: { itemId },
+    data: { url: image_url },
   });
   return image;
 };

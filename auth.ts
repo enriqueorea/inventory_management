@@ -16,7 +16,7 @@ declare module "next-auth" {
   interface Session {
     user: {
       role: UserRole;
-      stock_id: string | null;
+      inventory_id: string | null;
       profile_id: string | null;
       /**
        * By default, TypeScript merges new interface properties and overwrites existing ones.
@@ -45,8 +45,8 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
         session.user.role = token.role as UserRole;
       }
 
-      if (token.stock_id && session.user) {
-        session.user.stock_id = token.stock_id as string;
+      if (token.inventory_id && session.user) {
+        session.user.inventory_id = token.inventory_id as string;
       }
 
       if (token.profile_id && session.user) {
@@ -60,10 +60,10 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (!token.sub) return token;
       const existingUser = await getUserById(token.sub);
       const userProfile = await getProfileByUserID(token.sub);
-      const userStock = await getInventoryByUserId(token.sub);
+      const userIventory = await getInventoryByUserId(token.sub);
       if (!existingUser) return token;
 
-      token.stock_id = userStock?.id || null;
+      token.inventory_id = userIventory?.id || null;
       token.profile_id = userProfile?.id || null;
 
       token.role = existingUser.role;
