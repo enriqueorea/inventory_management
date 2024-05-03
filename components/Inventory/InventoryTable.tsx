@@ -1,4 +1,5 @@
 "use client";
+import { useInventory } from "@/hooks/inventory";
 import {
   Table,
   TableHeader,
@@ -10,51 +11,14 @@ import {
 import { Item } from "@prisma/client";
 import { Session } from "next-auth";
 
-const fakeData: Item[] = [
-  {
-    id: "234234-234",
-    inventoryId: "4534532",
-    stock_number: "DPD50-00670",
-    model: "VICA",
-    serial: "322104502225",
-    description: "EQUIPO ELECTRONICO PARA SOPORTE DE ENERGIA REGULADA",
-    brand: "VICA",
-    budget_number: "5150001",
-    price: 1455.27,
-    remarks: "N/A",
-  },
-  {
-    id: "534523-879",
-    inventoryId: "7832456",
-    stock_number: "DPD50-00567",
-    model: "XLTZ",
-    serial: "456789012345",
-    description: "COMPUTADORA PORTÁTIL PARA USO GENERAL",
-    brand: "XYZ Corp",
-    budget_number: "5150002",
-    price: 999.99,
-    remarks: "N/A",
-  },
-
-  {
-    id: "123456-789",
-    inventoryId: "9876543",
-    stock_number: "DPD50-00321",
-    model: "GAMMA",
-    serial: "987654321098",
-    description: "TELÉFONO INTELIGENTE DE ÚLTIMA GENERACIÓN",
-    brand: "GammaTech",
-    budget_number: "5150003",
-    price: 799.5,
-    remarks: "N/A",
-  },
-];
-
 export const InventoryTable = ({
   user,
 }: {
   user: Session["user"] | undefined;
 }) => {
+  const { data, isLoading, isFetching, error } = useInventory();
+  const loadingState =
+    isLoading || isFetching || data?.data?.length === 0 ? "loading" : "idle";
   return (
     <Table aria-label="Tabla de inventarios personal">
       <TableHeader>
@@ -67,10 +31,10 @@ export const InventoryTable = ({
         <TableColumn>Número de presupuesto</TableColumn>
         <TableColumn>Precio</TableColumn>
       </TableHeader>
-      <TableBody items={fakeData}>
+      <TableBody loadingState={loadingState} items={data?.data ?? []}>
         {(item) => (
           <TableRow key={item.id}>
-            <TableCell>{fakeData.indexOf(item) + 1}</TableCell>
+            <TableCell>0</TableCell>
             <TableCell>{item.stock_number}</TableCell>
             <TableCell>{item.description}</TableCell>
             <TableCell>{item.brand}</TableCell>

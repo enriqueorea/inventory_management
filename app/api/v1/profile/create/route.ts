@@ -19,7 +19,7 @@ export const POST = auth(async function POST(req) {
     });
 
     //stock id creation
-    await db.stock.create({
+    await db.inventory.create({
       data: {
         user: {
           connect: {
