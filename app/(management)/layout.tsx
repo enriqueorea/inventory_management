@@ -92,29 +92,9 @@ const ManagerLayout = ({
         </NavbarContent>
         <NavbarContent as={"div"} justify="end">
           <Dropdown placement="bottom-end">
-            <DropdownTrigger>
-              <Avatar
-                isBordered
-                as="button"
-                className="transition-transform"
-                name={session.data?.user?.name || ""}
-                size="sm"
-                src={session.data?.user?.image || ""}
-              />
-            </DropdownTrigger>
+            <DropdownTrigger>trigger</DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
-              <DropdownItem key="profile" className="h-14 gap-2">
-                <p className="font-semibold">
-                  {session.data?.user?.name || ""}
-                </p>
-                <p className="font-semibold">
-                  {session.data?.user?.email || ""}
-                </p>
-              </DropdownItem>
               <DropdownItem key="configurations">Configurations</DropdownItem>
-              <DropdownItem onPress={handleSignOut} key="logout" color="danger">
-                Cerrar sesión
-              </DropdownItem>
             </DropdownMenu>
           </Dropdown>
         </NavbarContent>
@@ -147,8 +127,8 @@ const ManagerLayout = ({
       </Navbar>
       <div
         className={`${
-          isMenuOpen ? "ml-[200px]" : ""
-        } transition-all duration-200 ease-in-out px-11`}
+          isMenuOpen ? "ml-[250px]" : ""
+        } transition-all duration-200 ease-in-out px-10`}
       >
         {children}
       </div>
