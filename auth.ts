@@ -60,6 +60,7 @@ export const { auth, handlers, signIn, signOut } = NextAuth({
       if (!token.sub) return token;
       const existingUser = await getUserById(token.sub);
       const userProfile = await getProfileByUserID(token.sub);
+
       const userIventory = await getInventoryByUserId(token.sub);
       if (!existingUser) return token;
 

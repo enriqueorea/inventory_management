@@ -29,7 +29,7 @@ model User {
   accounts      Account[]
   sessions      Session[]
   profile       Profile?
-  iventory      Inventory?
+  inventory     Inventory?
   role          UserRole   @default(USER)
   createdAt     DateTime   @default(now())
   updatedAt     DateTime   @updatedAt

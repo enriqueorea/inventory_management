@@ -6,6 +6,7 @@ import { Button, Input, Tooltip } from "@nextui-org/react";
 import { CircleHelpIcon } from "lucide-react";
 import { useMutation } from "@tanstack/react-query";
 import axios from "axios";
+import { redirect } from "next/navigation";
 
 export interface NewProfileForm {
   department: string;
@@ -23,6 +24,7 @@ export const NewProfile = () => {
     },
     onSuccess(data) {
       console.log(data);
+      redirect("/profile");
     },
   });
   const onSubmit = (data: NewProfileForm) => {

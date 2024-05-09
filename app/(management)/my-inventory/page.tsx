@@ -1,5 +1,6 @@
 import { auth } from "@/auth";
 import { InventoryHeader, InventoryTable } from "@/components/Inventory";
+import { redirect } from "next/navigation";
 import React from "react";
 
 const MyInventoryPage = async () => {
@@ -7,7 +8,7 @@ const MyInventoryPage = async () => {
   const user = session?.user;
 
   if (!user?.inventory_id) {
-    return <div>Inventory not found</div>;
+    return redirect("/my-inventory/create");
   }
 
   return (

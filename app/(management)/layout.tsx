@@ -86,13 +86,13 @@ const ManagerLayout = ({
           <NavbarMenuToggle
             aria-label={isMenuOpen ? "Close menu" : "Open menu"}
           />
-          <NavbarBrand>
-            <p className="font-bold text-inherit">Inventory</p>
-          </NavbarBrand>
+          <NavbarBrand>Inventory</NavbarBrand>
         </NavbarContent>
         <NavbarContent as={"div"} justify="end">
           <Dropdown placement="bottom-end">
-            <DropdownTrigger>trigger</DropdownTrigger>
+            <DropdownTrigger>
+              <Button>open</Button>
+            </DropdownTrigger>
             <DropdownMenu aria-label="Profile Actions" variant="flat">
               <DropdownItem key="configurations">Configurations</DropdownItem>
             </DropdownMenu>
@@ -102,7 +102,7 @@ const ManagerLayout = ({
           {menuItems.map((item, index) => (
             <NavbarMenuItem
               className={`${
-                pathname === item.href
+                pathname === item.href || pathname.includes(item.href)
                   ? "bg-white shadow-lg border-l-[4px] border-primary-500"
                   : "bg-[#f9f9f9]"
               }`}
