@@ -7,12 +7,6 @@ import mime from "mime";
 import { join } from "path";
 import { stat, writeFile, mkdir } from "fs/promises";
 
-export const config = {
-  api: {
-    bodyParser: false,
-  },
-};
-
 export const POST = auth(async function POST(req) {
   if (req.auth) {
     const formData = await req.formData();

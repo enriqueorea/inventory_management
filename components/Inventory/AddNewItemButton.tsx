@@ -16,7 +16,11 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { FiPlusCircle } from "react-icons/fi";
 import { Form, FormField } from "../ui/form";
-import { useMutation } from "@tanstack/react-query";
+import {
+  QueryClient,
+  useMutation,
+  useQueryClient,
+} from "@tanstack/react-query";
 import { NewItem, type NewItemForm } from "@/models/items/new-item";
 import axios from "axios";
 import { toast } from "../ui/use-toast";
@@ -42,7 +46,7 @@ export const AddNewItemButton = () => {
                 <div className="flex-1 border-b-1 border-[#c1c7c6] mx-3" />
               </ModalHeader>
               <ModalBody>
-                <NewItemForm />
+                <NewItemForm onSucces={onClose} />
               </ModalBody>
             </>
           )}
@@ -52,8 +56,9 @@ export const AddNewItemButton = () => {
   );
 };
 
-const NewItemForm = () => {
+const NewItemForm = ({ onSucces }: { onSucces: () => void }) => {
   const { data: session } = useSession();
+  const queryClient = useQueryClient();
   const form = useForm<NewItemForm>({
     defaultValues: {
       inventoryId: session?.user.inventory_id || "",
@@ -93,10 +98,15 @@ const NewItemForm = () => {
     },
     onSuccess: (data) => {
       console.log(data);
+      queryClient.invalidateQueries({
+        queryKey: ["inventory"],
+      });
       toast({
         title: "Nuevo bien guardado",
         description: "El nuevo bien ha sido guardado exitosamente",
       });
+      form.reset();
+      onSucces();
     },
   });
 

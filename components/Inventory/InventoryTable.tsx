@@ -31,7 +31,11 @@ export const InventoryTable = ({
         <TableColumn>Número de presupuesto</TableColumn>
         <TableColumn>Precio</TableColumn>
       </TableHeader>
-      <TableBody loadingState={loadingState} items={data?.data ?? []}>
+      <TableBody
+        emptyContent={"No se encuentra ningun bien registrado"}
+        loadingState={loadingState}
+        items={data?.data ?? []}
+      >
         {(item) => (
           <TableRow key={item.id}>
             <TableCell>0</TableCell>

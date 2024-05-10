@@ -15,6 +15,9 @@ export const getItemById = async (id: string) => {
 export const getItemsByStockId = async (inventoryId: string) => {
   const items = await db.item.findMany({
     where: { inventoryId },
+    include: {
+      image: true,
+    },
   });
   return items;
 };
